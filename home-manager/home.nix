@@ -38,7 +38,6 @@
     };
   };
 
-  # TODO: Set your username
   home = {
     username = "itsusinn";
     homeDirectory = "/home/itsusinn";
@@ -59,9 +58,7 @@
   programs.home-manager.enable = true;
   programs.git.enable = true;
 
-  programs.zsh = {
-    enable = true;
-  };
+
   programs.thunar = {
     enable = true;
     plugins = with pkgs.xfce; [thunar-archive-plugin thunar-volman];
@@ -78,7 +75,15 @@
     xwayland.enable = true;
     enableNvidiaPatches = true;
   };
-
+  programs.zsh = {
+    zplug = {
+      enable = true;
+      plugins = [
+        { name = "zsh-users/zsh-autosuggestions"; }
+        { name = "romkatv/powerlevel10k"; tags = [ as:theme depth:1 ]; }
+      ];
+    };
+  };
   # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 

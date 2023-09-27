@@ -9,8 +9,8 @@
     home-manager.url = "github:nix-community/home-manager";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
-    # TODO: Add any other flake you might need
-    # hardware.url = "github:nixos/nixos-hardware";
+    hardware.url = "github:nixos/nixos-hardware";
+    hyprland.url = "github:hyprwm/Hyprland";
 
     # Shameless plug: looking for a way to nixify your themes and make
     # everything match nicely? Try nix-colors!
@@ -21,6 +21,7 @@
     self,
     nixpkgs,
     home-manager,
+    nixos-hardware,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -32,7 +33,11 @@
       itsusinn-nixos = nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs outputs;};
         # > Our main nixos configuration file <
-        modules = [./nixos/configuration.nix];
+        modules = [
+          nixos-hardware.nixosModules.asus-zephyrus-ga401
+          ./nixos/configuration.nix
+          ./home-manager/default.nix
+        ];
       };
     };
 
@@ -40,7 +45,7 @@
     # Available through 'home-manager --flake .#your-username@your-hostname'
     homeConfigurations = {
       # FIXME replace with your username@hostname
-      "your-username@your-hostname" = home-manager.lib.homeManagerConfiguration {
+      "itsusinn@itsusinn-nixos" = home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
         extraSpecialArgs = {inherit inputs outputs;};
         # > Our main home-manager configuration file <

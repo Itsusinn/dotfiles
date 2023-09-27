@@ -3,7 +3,6 @@
 {
   imports =
     [
-      <nixos-hardware/asus/zephyrus/ga401>
       ./hardware-configuration.nix
     ];
 
@@ -113,6 +112,7 @@
     ];
   };
   environment.systemPackages = with pkgs; [
+    git
     wget
     pciutils
     tmux
@@ -139,9 +139,8 @@
     edithypr = "nvim ~/.config/hypr/hyprland.conf";
     rebuild = "sudo nixos-rebuild switch";
   };
-
-  nixpkgs.config = {
-    allowUnfree = true;
+  programs.zsh = {
+    enable = true;
   };
   services.btrfs.autoScrub = {
     enable = true;
