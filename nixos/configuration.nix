@@ -1,5 +1,5 @@
 { inputs, config, pkgs, lib, stdenv, ... }: let
-  sessions = pkgs.callPackage ./session.nix {};
+  hyprland-session = pkgs.callPackage ./session.nix {};
 in
 {
   imports =
@@ -132,7 +132,7 @@ in
   services.xserver = {
     enable = true;
     displayManager = {
-      sessionPackages = [sessions];
+      sessionPackages = [hyprland-session];
       gdm = {
         enable = true;
         wayland = true;

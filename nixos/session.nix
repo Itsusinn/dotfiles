@@ -1,5 +1,7 @@
 {
+  lib,
   stdenv,
+  pkgs,
   ...
 }: let
   hyprland = ''
@@ -11,8 +13,11 @@
   '';
 in
   stdenv.mkDerivation rec {
+    name = "hyprland-session";
+    dontUnpack = true;
     installPhase = ''
       mkdir -p $out/share/wayland-sessions
       echo "${hyprland}" > $out/share/wayland-sessions/hyprland.desktop
     '';
+    passthru.providedSessions = ["hyprland"];
   }
