@@ -1,5 +1,6 @@
-{ inputs, config, pkgs, lib, ... }:
-
+{ inputs, config, pkgs, lib, stdenv, ... }: let
+  sessions = pkgs.callPackage ./session.nix {};
+in
 {
   imports =
     [
@@ -130,9 +131,12 @@
   };
   services.xserver = {
     enable = true;
-    displayManager.gdm = {
-      enable = true;
-      wayland = true;
+    displayManager = {
+      sessionPackages = [sessions];
+      gdm = {
+        enable = true;
+        wayland = true;
+      };
     };
   };
   programs = {

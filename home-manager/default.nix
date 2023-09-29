@@ -2,7 +2,6 @@
   imports = [
     # Import home-manager's NixOS module
     inputs.home-manager.nixosModules.home-manager
-    ./hyprland/session.nix
   ];
 
   home-manager = {
