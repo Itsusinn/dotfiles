@@ -12,6 +12,9 @@
     hardware.url = "github:nixos/nixos-hardware";
     hyprland.url = "github:hyprwm/Hyprland";
 
+    anyrun.url = "github:Kirottu/anyrun";
+    anyrun.inputs.nixpkgs.follows = "nixpkgs";
+
     # Shameless plug: looking for a way to nixify your themes and make
     # everything match nicely? Try nix-colors!
     # nix-colors.url = "github:misterio77/nix-colors";
@@ -22,6 +25,7 @@
     nixpkgs,
     home-manager,
     nixos-hardware,
+    hyprland,
     ...
   } @ inputs: let
     inherit (self) outputs;
@@ -40,9 +44,12 @@
     };
     homeConfigurations = {
       "itsusinn@itsusinn-nixos" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux; # Home-manager requires 'pkgs' instance
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
         extraSpecialArgs = {inherit inputs outputs;};
-        modules = [./home-manager/home.nix];
+        modules = [
+          hyprland.homeManagerModules.default
+          ./home-manager/home.nix
+        ];
       };
     };
   };

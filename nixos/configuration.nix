@@ -40,9 +40,7 @@
       #   });
       # })
     ];
-    # Configure your nixpkgs instance
     config = {
-      # Disable if you don't want unfree packages
       allowUnfree = true;
     };
   };
@@ -116,32 +114,9 @@
     wget
     pciutils
     tmux
-    kitty
-    xdg-desktop-portal-hyprland
-    rofi-wayland
-    waybar
-    dunst
-    pavucontrol
-    cliphist
     compsize
-    # xfce
-    xfce.xfce4-terminal
-    xfce.xfce4-settings
-    xfce.xfce4-taskmanager
-    # gtk theme
-    glib
-    gtk3.out
-    gnome.gnome-themes-extra
-    gnome.adwaita-icon-theme
   ];
-  environment.shellAliases = {
-    editnix = "sudo nvim /etc/nixos/configuration.nix";
-    edithypr = "nvim ~/.config/hypr/hyprland.conf";
-    rebuild = "sudo nixos-rebuild switch";
-  };
-  programs.zsh = {
-    enable = true;
-  };
+
   services.btrfs.autoScrub = {
     enable = true;
     interval = "monthly";
@@ -153,37 +128,36 @@
     alsa.support32Bit = true;
     pulse.enable = true;
   };
-  services.xserver.enable = true;
-  services.xserver.displayManager.gdm = {
+  services.xserver = {
     enable = true;
-    wayland = true;
+    displayManager.gdm = {
+      enable = true;
+      wayland = true;
+    };
   };
-  programs.thunar = {
-    enable = true;
-    plugins = with pkgs.xfce; [thunar-archive-plugin thunar-volman];
+  programs = {
+    # enable hyprland and required options
+    hyprland.enable = true;
+    # steam.enable = true;
+    thunar = {
+      enable = true;
+      plugins = with pkgs.xfce; [thunar-archive-plugin thunar-volman];
+    };
+    xfconf.enable = true;
+    zsh.enable = true;
+    clash-verge = {
+      enable = true;
+      tunMode = true;
+      autoStart = false;
+    };
   };
-  programs.xfconf.enable = true;
-  programs.neovim.enable = true;
-  programs.clash-verge = {
-    enable = true;
-    tunMode = true;
-    autoStart = false;
-  };
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-    enableNvidiaPatches = true;
-  };
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   networking.firewall.enable = false;
 
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
   system.stateVersion = "23.05";
 }
 
