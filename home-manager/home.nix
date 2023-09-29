@@ -31,7 +31,6 @@
     ];
     # Configure your nixpkgs instance
     config = {
-      # Disable if you don't want unfree packages
       allowUnfree = true;
       # Workaround for https://github.com/nix-community/home-manager/issues/2942
       allowUnfreePredicate = _: true;
@@ -42,8 +41,6 @@
     username = "itsusinn";
     homeDirectory = "/home/itsusinn";
   };
-
-  programs.neovim.enable = true;
   home.packages = with pkgs; [
     steam
     firefox
@@ -58,30 +55,31 @@
   programs.home-manager.enable = true;
   programs.git.enable = true;
 
-
-  programs.thunar = {
-    enable = true;
-    plugins = with pkgs.xfce; [thunar-archive-plugin thunar-volman];
-  };
-  programs.xfconf.enable = true;
-
-  programs.clash-verge = {
-    enable = true;
-    tunMode = true;
-    autoStart = false;
-  };
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-    enableNvidiaPatches = true;
-  };
   programs.zsh = {
+    enable = true;
+    shellAliases = {
+      ll = "ls -l";
+      update = "cd /home/itsusinn/dotfiles && sudo nixos-rebuild switch --flake .#itsusinn-nixos";
+    };
     zplug = {
       enable = true;
       plugins = [
         { name = "zsh-users/zsh-autosuggestions"; }
-        { name = "romkatv/powerlevel10k"; tags = [ as:theme depth:1 ]; }
       ];
+    };
+  };
+  programs.starship = {
+    enable = true;
+    # Configuration written to ~/.config/starship.toml
+    settings = {
+      # add_newline = false;
+
+      # character = {
+      #   success_symbol = "[➜](bold green)";
+      #   error_symbol = "[➜](bold red)";
+      # };
+
+      # package.disabled = true;
     };
   };
   # Nicely reload system units when changing configs

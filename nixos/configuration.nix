@@ -158,11 +158,27 @@
     enable = true;
     wayland = true;
   };
+  programs.thunar = {
+    enable = true;
+    plugins = with pkgs.xfce; [thunar-archive-plugin thunar-volman];
+  };
+  programs.xfconf.enable = true;
+  programs.neovim.enable = true;
+  programs.clash-verge = {
+    enable = true;
+    tunMode = true;
+    autoStart = false;
+  };
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+    enableNvidiaPatches = true;
+  };
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
