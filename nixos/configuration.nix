@@ -116,6 +116,7 @@ in
     pciutils
     tmux
     compsize
+    polkit_gnome
   ];
 
   services.btrfs.autoScrub = {

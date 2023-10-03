@@ -49,6 +49,8 @@
     vscode
     gitkraken
     obs-studio
+    gparted
+    jetbrains.idea-ultimate
 
     # Desktop
     xdg-desktop-portal-hyprland
@@ -61,6 +63,7 @@
     xfce.xfce4-terminal
     xfce.xfce4-settings
     xfce.xfce4-taskmanager
+    xfce.exo
     # gtk theme
     glib
     gtk3.out
