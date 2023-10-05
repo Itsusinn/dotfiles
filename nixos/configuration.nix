@@ -56,7 +56,7 @@ in
   # Configure network proxy if necessary
   networking.proxy.default = "http://127.0.0.1:7890/";
   networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
+  networking.networkmanager.enable = true;
   # Select internationalisation properties.
   i18n.defaultLocale = "zh_CN.UTF-8";
   # console = {

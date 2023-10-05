@@ -51,7 +51,10 @@
     obs-studio
     gparted
     jetbrains.idea-ultimate
-
+    rustup
+    android-tools
+    telegram-desktop
+    qbittorrent
     # Desktop
     xdg-desktop-portal-hyprland
     rofi-wayland
@@ -59,6 +62,8 @@
     dunst
     cliphist
     pavucontrol
+    gvfs
+    
     # xfce
     xfce.xfce4-terminal
     xfce.xfce4-settings
