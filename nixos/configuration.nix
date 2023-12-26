@@ -117,6 +117,8 @@ in
     tmux
     compsize
     polkit_gnome
+    #uutils-coreutils-noprefix
+    libgcc
   ];
 
   services.btrfs.autoScrub = {
