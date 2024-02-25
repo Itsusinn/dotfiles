@@ -46,6 +46,7 @@ in
     };
   };
 
+
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
@@ -95,7 +96,7 @@ in
   users.users.itsusinn = {
     isNormalUser = true;
     extraGroups = [ "wheel" "video" "audio"];
-    shell = pkgs.zsh;
+    shell = pkgs.fish;
     packages = with pkgs; [
 
     ];
@@ -103,6 +104,7 @@ in
   fonts = {
     enableDefaultPackages = true;
     packages = with pkgs; [
+      lxgw-wenkai
       noto-fonts
       fira-code-nerdfont
       source-han-sans
@@ -151,7 +153,7 @@ in
       plugins = with pkgs.xfce; [thunar-archive-plugin thunar-volman];
     };
     xfconf.enable = true;
-    zsh.enable = true;
+    fish.enable = true;
     clash-verge = {
       enable = true;
       tunMode = true;
@@ -165,6 +167,6 @@ in
   # Or disable the firewall altogether.
   networking.firewall.enable = false;
 
-  system.stateVersion = "23.05";
+  system.stateVersion = "24.05";
 }
 

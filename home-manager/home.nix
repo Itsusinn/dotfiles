@@ -42,7 +42,17 @@
     homeDirectory = "/home/itsusinn";
   };
   home.packages = with pkgs; [
-    steam
+    # dev
+    bat
+    eza
+    sqlite
+    nodePackages.nodejs
+    nodePackages.pnpm
+    nodePackages.yarn
+    gcc
+    gnupg
+    # apps
+    hyprland
     firefox
     spotify
     qq
@@ -51,6 +61,7 @@
     obs-studio
     gparted
     jetbrains.idea-ultimate
+    android-studio
     rustup
     android-tools
     telegram-desktop
@@ -63,7 +74,9 @@
     cliphist
     pavucontrol
     gvfs
-    
+
+
+
     # xfce
     xfce.xfce4-terminal
     xfce.xfce4-settings
@@ -79,19 +92,25 @@
   # Enable home-manager and git
   programs.home-manager.enable = true;
   programs.git.enable = true;
-
-  programs.zsh = {
+  programs.fish = {
     enable = true;
     shellAliases = {
       ll = "ls -l";
-      update = "cd /home/itsusinn/dotfiles && sudo nixos-rebuild switch --flake .#itsusinn-nixos";
+      update = "sudo nix-channel --update && cd /home/itsusinn/dotfiles && sudo nixos-rebuild switch --flake .#itsusinn-nixos";
+      cat = "bat";
+      ls = "eza";
     };
-    zplug = {
-      enable = true;
-      plugins = [
-        { name = "zsh-users/zsh-autosuggestions"; }
-      ];
-    };
+    plugins = [
+      { name = "z"; src = pkgs.fishPlugins.z.src; }
+      { name = "tide"; src = pkgs.fishPlugins.tide.src; }
+      { name = "sponge"; src = pkgs.fishPlugins.sponge.src; }
+      { name = "git"; src = pkgs.fishPlugins.plugin-git.src; }
+    ];
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableZshIntegration = true;
   };
   programs.neovim.enable = true;
   programs.starship = {
@@ -110,7 +129,6 @@
   };
   wayland.windowManager.hyprland = {
     enable = true;
-    enableNvidiaPatches = true;
     xwayland.enable = true;
     systemdIntegration = true;
     extraConfig = "
@@ -172,9 +190,8 @@
       bindm = $mainMod, mouse:273, resizewindow
     ";
   };
-  # Nicely reload system units when changing configs
   systemd.user.startServices = "sd-switch";
 
-  # https://nixos.wiki/wiki/FAQ/When_do_I_update_stateVersion
-  home.stateVersion = "23.05";
+  home.stateVersion = "23.11";
+  home.enableNixpkgsReleaseCheck = false;
 }
