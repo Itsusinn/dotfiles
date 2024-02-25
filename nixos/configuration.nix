@@ -1,6 +1,4 @@
-{ inputs, config, pkgs, lib, stdenv, ... }: let
-  hyprland-session = pkgs.callPackage ./session.nix {};
-in
+{ inputs, config, pkgs, lib, stdenv, ... }:
 {
   imports =
     [
@@ -29,43 +27,18 @@ in
   swapDevices = [ { device = "/swap/swapfile"; } ];
   networking.hostName = "itsusinn-nixos"; # Define your hostname.
   nixpkgs = {
-    # You can add overlays here
-    overlays = [
-      # If you want to use overlays exported from other flakes:
-      # neovim-nightly-overlay.overlays.default
-
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
-    ];
     config = {
       allowUnfree = true;
     };
   };
 
-
-  # Pick only one of the below networking options.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  # networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
-
-  # Set your time zone.
   # time.timeZone = "Europe/Amsterdam";
 
   # Configure network proxy if necessary
   networking.proxy.default = "http://127.0.0.1:7890/";
   networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
   networking.networkmanager.enable = true;
-  # Select internationalisation properties.
   i18n.defaultLocale = "zh_CN.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkbOptions in tty.
-  # };
-
   nix = {
     # This will add each flake input as a registry
     # To make nix3 commands consistent with your flake
@@ -82,6 +55,7 @@ in
       experimental-features = "nix-command flakes";
       # Deduplicate and optimize nix store
       auto-optimise-store = true;
+      # substituters =  [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
     };
     gc = {
       automatic = true;
@@ -97,20 +71,38 @@ in
     isNormalUser = true;
     extraGroups = [ "wheel" "video" "audio"];
     shell = pkgs.fish;
-    packages = with pkgs; [
-
-    ];
+    packages = with pkgs; [];
   };
   fonts = {
     enableDefaultPackages = true;
     packages = with pkgs; [
-      lxgw-wenkai
-      noto-fonts
-      fira-code-nerdfont
-      source-han-sans
-      source-han-serif
+      twemoji-color-font
       sarasa-gothic
+      jetbrains-mono
+      noto-fonts
+      noto-fonts-emoji
+      fira-code-nerdfont
     ];
+    fontconfig = {
+      defaultFonts = {
+        monospace = [
+          "Fira Code Nerd Font Mono"
+          "Sarasa Mono SC"
+          "Noto Color Emoji"
+        ];
+        sansSerif = [
+          "Noto Sans"
+          "Sarasa Gothic SC"
+          "Noto Color Emoji"
+        ];
+        serif = [
+          "Noto Serif"
+          "Sarasa Gothic SC"
+          "Noto Color Emoji"
+        ];
+        emoji = ["Noto Color Emoji"];
+      };
+    };
   };
   environment.systemPackages = with pkgs; [
     git
@@ -118,50 +110,62 @@ in
     pciutils
     tmux
     compsize
-    polkit_gnome
+
     #uutils-coreutils-noprefix
     libgcc
   ];
-
-  services.btrfs.autoScrub = {
-    enable = true;
-    interval = "monthly";
-    fileSystems = [ "/" ];
+  services = {
+    btrfs.autoScrub = {
+      enable = true;
+      interval = "monthly";
+      fileSystems = [ "/" ];
+    };
+    greetd = {
+      enable = true;
+      settings = {
+        default_session = {
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
+          user = "greeter";
+        };
+      };
+    };
   };
+
   services.pipewire = {
     enable = true;
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    wireplumber.enable = true;
   };
+  hardware.pulseaudio.enable = false;
+
   services.xserver = {
     enable = true;
-    displayManager = {
-      sessionPackages = [hyprland-session];
-      gdm = {
-        enable = true;
-        wayland = true;
-      };
-    };
+    displayManager.startx.enable = true;
   };
+
   programs = {
-    # enable hyprland and required options
-    hyprland.enable = true;
-    # steam.enable = true;
-    thunar = {
-      enable = true;
-      plugins = with pkgs.xfce; [thunar-archive-plugin thunar-volman];
-    };
-    xfconf.enable = true;
     fish.enable = true;
     clash-verge = {
       enable = true;
       tunMode = true;
       autoStart = false;
     };
+    xfconf.enable = true;
+    dconf.enable = true;
+    thunar = {
+      enable = true;
+      plugins = with pkgs.xfce; [thunar-archive-plugin thunar-volman];
+    };
   };
 
-  # Open ports in the firewall.
+  zramSwap = {
+    enable = true;
+    memoryPercent = 50;
+    algorithm = "zstd";
+  };
+
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.

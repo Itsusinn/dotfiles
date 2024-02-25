@@ -1,35 +1,14 @@
 # This is your home-manager configuration file
 # Use this to configure your home environment (it replaces ~/.config/nixpkgs/home.nix)
+{ inputs,lib,config,pkgs,...}:
 {
-  inputs,
-  lib,
-  config,
-  pkgs,
-  ...
-}: {
-  # You can import other home-manager modules here
   imports = [
-    # If you want to use home-manager modules from other flakes (such as nix-colors):
-    # inputs.nix-colors.homeManagerModule
-
-    # You can also split up your configuration and import pieces of it here:
-    # ./nvim.nix
+    ./theme.nix
+    ./dconf.nix
+    ./waybar.nix
+    ./xfce.nix
   ];
-
   nixpkgs = {
-    # You can add overlays here
-    overlays = [
-      # If you want to use overlays exported from other flakes:
-      # neovim-nightly-overlay.overlays.default
-
-      # Or define it inline, for example:
-      # (final: prev: {
-      #   hi = final.hello.overrideAttrs (oldAttrs: {
-      #     patches = [ ./change-hello-to-hi.patch ];
-      #   });
-      # })
-    ];
-    # Configure your nixpkgs instance
     config = {
       allowUnfree = true;
       # Workaround for https://github.com/nix-community/home-manager/issues/2942
@@ -42,23 +21,26 @@
     homeDirectory = "/home/itsusinn";
   };
   home.packages = with pkgs; [
+    # shell
+    bat # cat
+    eza # ls
     # dev
-    bat
-    eza
     sqlite
     nodePackages.nodejs
     nodePackages.pnpm
     nodePackages.yarn
     gcc
     gnupg
+    zulu8
+    rsync
     # apps
-    hyprland
     firefox
     spotify
     qq
     vscode
     gitkraken
     obs-studio
+    home-manager
     gparted
     jetbrains.idea-ultimate
     android-studio
@@ -70,23 +52,7 @@
     xdg-desktop-portal-hyprland
     rofi-wayland
     waybar
-    dunst
     cliphist
-    pavucontrol
-    gvfs
-
-
-
-    # xfce
-    xfce.xfce4-terminal
-    xfce.xfce4-settings
-    xfce.xfce4-taskmanager
-    xfce.exo
-    # gtk theme
-    glib
-    gtk3.out
-    gnome.gnome-themes-extra
-    gnome.adwaita-icon-theme
   ];
 
   # Enable home-manager and git
@@ -96,7 +62,8 @@
     enable = true;
     shellAliases = {
       ll = "ls -l";
-      update = "sudo nix-channel --update && cd /home/itsusinn/dotfiles && sudo nixos-rebuild switch --flake .#itsusinn-nixos";
+      update-flake = "cd /home/itsusinn/dotfiles && git add . && sudo nix flake update";
+      update = "cd /home/itsusinn/dotfiles && git add . && sudo nixos-rebuild switch --flake .#itsusinn-nixos";
       cat = "bat";
       ls = "eza";
     };
@@ -110,31 +77,26 @@
 
   programs.direnv = {
     enable = true;
-    enableZshIntegration = true;
+    # enableFishIntegration = true;
   };
   programs.neovim.enable = true;
   programs.starship = {
     enable = true;
-    # Configuration written to ~/.config/starship.toml
     settings = {
       # add_newline = false;
-
-      # character = {
-      #   success_symbol = "[➜](bold green)";
-      #   error_symbol = "[➜](bold red)";
-      # };
-
-      # package.disabled = true;
     };
   };
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;
-    systemdIntegration = true;
+    systemd.enable = true;
     extraConfig = "
       monitor=DP-1,2560x1440,auto,1
       monitor=eDP-1,disable
-      exec-once = waybar & clash-verge
+      exec-once = waybar
+      exec-once = clash-verge
+      exec-once = thunar --daemon
+      exec-once = playerctld
       exec-once = wl-paste --type text --watch cliphist store
       env = XCURSOR_SIZE,24
       env = WLR_NO_HARDWARE_CURSORS,1
@@ -181,7 +143,7 @@
       bind = $mainMod SHIFT, 9, movetoworkspace, 9
       bind = $mainMod SHIFT, 0, movetoworkspace, 10
 
-      # Scroll through existing workspaces with mainMod + scroll
+      # Scroll through existing workspaces with mainMod + scrolls
       bind = $mainMod, mouse_down, workspace, e+1
       bind = $mainMod, mouse_up, workspace, e-1
 
@@ -190,8 +152,20 @@
       bindm = $mainMod, mouse:273, resizewindow
     ";
   };
+
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5 = {
+      addons = with pkgs; [
+        fcitx5-chinese-addons
+        fcitx5-configtool
+      ];
+    };
+  };
+
   systemd.user.startServices = "sd-switch";
 
-  home.stateVersion = "23.11";
-  home.enableNixpkgsReleaseCheck = false;
+
+  home.stateVersion = "24.05";
+  home.enableNixpkgsReleaseCheck = true;
 }

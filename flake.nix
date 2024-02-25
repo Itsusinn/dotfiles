@@ -1,6 +1,5 @@
 {
   description = "My nix config";
-
   inputs = {
     # Nixpkgs
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -15,11 +14,15 @@
     anyrun.url = "github:Kirottu/anyrun";
     anyrun.inputs.nixpkgs.follows = "nixpkgs";
 
+    ags.url = "github:Aylur/ags";
+    ags.inputs.nixpkgs.follows = "nixpkgs";
+
     flake-utils.url = "github:numtide/flake-utils";
 
-    # Shameless plug: looking for a way to nixify your themes and make
-    # everything match nicely? Try nix-colors!
-    # nix-colors.url = "github:misterio77/nix-colors";
+    more-waita = {
+      url = "github:somepaulo/MoreWaita";
+      flake = false;
+    };
   };
 
   outputs = {
@@ -42,6 +45,9 @@
           nixos-hardware.nixosModules.asus-zephyrus-ga401
           ./nixos/configuration.nix
           ./home-manager/default.nix
+          {
+            nix.settings.trusted-users = [ "itsusinn" ];
+          }
         ];
       };
     };
