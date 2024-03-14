@@ -37,8 +37,7 @@
 
 
                 cpu = {
-                    format = " {icon0}{icon1}{icon2}{icon3}{icon4}{icon5}{icon6}{icon7} ";
-                    format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
+                    format = "  ";
                 };
                 memory = {
                     format = "  ";
@@ -48,14 +47,10 @@
                 };
 
                 pluseaudio = {
-                    format = " {icon} ";
-                    format-muted = "";
-                    format-icons = {
-                        headphone = "";
-                        headset = "";
-                        default = ["" "" ""];
-                    };
-                    on-click = "pavucontrol";
+                    format = "  ";
+                    format-muted = "  ";
+                    format-source = "  ";
+                    # on-click = "pavucontrol";
                 };
                 tray = {
                     icon-size = 18;

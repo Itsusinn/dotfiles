@@ -25,19 +25,27 @@
     };
   };
   swapDevices = [ { device = "/swap/swapfile"; } ];
-  networking.hostName = "itsusinn-nixos"; # Define your hostname.
   nixpkgs = {
     config = {
       allowUnfree = true;
+      android_sdk.accept_license = true;
     };
   };
 
-  # time.timeZone = "Europe/Amsterdam";
+  time.timeZone = "Asia/Shanghai";
 
   # Configure network proxy if necessary
+  networking = {
+    networkmanager.enable = true;
+    hostName = "itsusinn-nixos";
+    # networking.firewall.allowedTCPPorts = [ ... ];
+    # networking.firewall.allowedUDPPorts = [ ... ];
+    # Or disable the firewall altogether.
+    firewall.enable = false;
+  };
   networking.proxy.default = "http://127.0.0.1:7890/";
   networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-  networking.networkmanager.enable = true;
+
   i18n.defaultLocale = "zh_CN.UTF-8";
   nix = {
     # This will add each flake input as a registry
@@ -136,10 +144,11 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    jack.enable = true;
     wireplumber.enable = true;
   };
   hardware.pulseaudio.enable = false;
-
+  services.gvfs.enable = true;
   services.xserver = {
     enable = true;
     displayManager.startx.enable = true;
@@ -165,11 +174,6 @@
     memoryPercent = 50;
     algorithm = "zstd";
   };
-
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  networking.firewall.enable = false;
 
   system.stateVersion = "24.05";
 }

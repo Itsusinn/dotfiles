@@ -3,6 +3,7 @@
 { inputs,lib,config,pkgs,...}:
 {
   imports = [
+    # ./android.nix
     ./theme.nix
     ./dconf.nix
     ./waybar.nix
@@ -13,6 +14,7 @@
       allowUnfree = true;
       # Workaround for https://github.com/nix-community/home-manager/issues/2942
       allowUnfreePredicate = _: true;
+      android_sdk.accept_license = true;
     };
   };
 
@@ -31,8 +33,11 @@
     nodePackages.yarn
     gcc
     gnupg
-    zulu8
+    zulu17
     rsync
+    mitmproxy
+    python3
+    gradle
     # apps
     firefox
     spotify
@@ -45,7 +50,6 @@
     jetbrains.idea-ultimate
     android-studio
     rustup
-    android-tools
     telegram-desktop
     qbittorrent
     # Desktop
@@ -54,6 +58,7 @@
     waybar
     cliphist
   ];
+
 
   # Enable home-manager and git
   programs.home-manager.enable = true;

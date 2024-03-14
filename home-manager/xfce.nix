@@ -8,11 +8,8 @@
         xfce.xfce4-volumed-pulse
         xfce.xfce4-icon-theme
         font-manager
-        gvfs
         polkit_gnome
         pavucontrol
         networkmanagerapplet
-
-        gtk-layer-shell
     ];
 }
