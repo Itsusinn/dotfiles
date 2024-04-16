@@ -5,7 +5,9 @@ let
     llvmPackages_11.libcxxStdenv
     llvmPackages_11.libraries.libcxx
     llvmPackages_11.libraries.libcxxabi
-    libxml2
+    llvmPackages_11.libclang.lib
+    ncurses
+    pkg-config
   ];
 
 in

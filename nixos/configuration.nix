@@ -23,6 +23,10 @@
       device = "/dev/disk/by-uuid/96fcf084-cbcc-d15f-849c-0abcc6bd10b6";
       fsType = "btrfs";
     };
+    "/media/mobile" = {
+      device = "/dev/disk/by-uuid/14ADC24058EA7528";
+      fsType = "ntfs";
+    };
   };
   swapDevices = [ { device = "/swap/swapfile"; } ];
   nixpkgs = {
@@ -41,10 +45,9 @@
     # networking.firewall.allowedTCPPorts = [ ... ];
     # networking.firewall.allowedUDPPorts = [ ... ];
     # Or disable the firewall altogether.
+    # networking.nftables.enable = true;
     firewall.enable = false;
   };
-  networking.proxy.default = "http://127.0.0.1:7890/";
-  networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   i18n.defaultLocale = "zh_CN.UTF-8";
   nix = {
@@ -67,8 +70,8 @@
     };
     gc = {
       automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 14d";
+      dates = "daily";
+      options = "--delete-older-than 3d"; # 士别三日 当刮目相看
     };
   };
 
@@ -120,7 +123,7 @@
     compsize
 
     #uutils-coreutils-noprefix
-    libgcc
+    #libgcc
   ];
   services = {
     btrfs.autoScrub = {
@@ -148,11 +151,16 @@
     wireplumber.enable = true;
   };
   hardware.pulseaudio.enable = false;
+  hardware.steam-hardware.enable = true;
   services.gvfs.enable = true;
   services.xserver = {
     enable = true;
     displayManager.startx.enable = true;
   };
+  # use adb in non-root
+  services.udev.packages = [
+    pkgs.android-udev-rules
+  ];
 
   programs = {
     fish.enable = true;
@@ -160,12 +168,26 @@
       enable = true;
       tunMode = true;
       autoStart = false;
+      package = pkgs.clash-nyanpasu;
     };
     xfconf.enable = true;
     dconf.enable = true;
     thunar = {
       enable = true;
       plugins = with pkgs.xfce; [thunar-archive-plugin thunar-volman];
+    };
+    steam = {
+      enable = true;
+      extraCompatPackages = with pkgs; [
+        proton-ge-bin
+      ];
+      gamescopeSession = {
+        enable = true;
+      };
+    };
+    gamescope = {
+      enable = true;
+      capSysNice = true;
     };
   };
 
