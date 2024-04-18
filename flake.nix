@@ -14,7 +14,7 @@
     flake-utils.url = "github:numtide/flake-utils";
   };
 
-  outputs = {
+  outputs = inputs @ {
     self,
     nixpkgs,
     home-manager,
@@ -22,31 +22,20 @@
     hyprland,
     flake-utils,
     ...
-  } @ inputs: let
-    inherit (self) outputs;
-  in {
-    # NixOS configuration entrypoint
-    # Available through 'nixos-rebuild --flake .#your-hostname'
+  } : {
     nixosConfigurations = {
-      itsusinn-nixos = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs outputs;};
+      nixos-ga401 = nixpkgs.lib.nixosSystem {
         modules = [
           nixos-hardware.nixosModules.asus-zephyrus-ga401
-          ./nixos/configuration.nix
-          ./home-manager/default.nix
+          ./hosts/ga401
+          home-manager.nixosModules.home-manager
           {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.extraSpecialArgs = inputs;
+            home-manager.users.itsusinn = import ./home;
             nix.settings.trusted-users = [ "itsusinn" ];
           }
-        ];
-      };
-    };
-    homeConfigurations = {
-      "itsusinn@itsusinn-nixos" = home-manager.lib.homeManagerConfiguration {
-        pkgs = nixpkgs.legacyPackages.x86_64-linux;
-        extraSpecialArgs = {inherit inputs outputs;};
-        modules = [
-          hyprland.homeManagerModules.default
-          ./home-manager/home.nix
         ];
       };
     };

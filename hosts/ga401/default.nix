@@ -10,17 +10,13 @@
   boot.loader.efi.canTouchEfiVariables = true;
   # boot.kernelParams = [ "module_blacklist=amdgpu" ];
   fileSystems = {
-    "/".options = ["compress=zstd"];
-    "/home".options = ["compress=zstd"];
-    "/nix".options = ["compress=zstd" "noatime"];
-    "/swap".options = ["noatime"];
     "/media/game" = {
-      device = "/dev/disk/by-uuid/96fcf084-cbcc-d15f-849c-0abcc6bd10b6";
+      device = "/dev/disk/by-uuid/c06e2de3-db2b-4ce9-baa3-8a91b491cf1a";
       fsType = "btrfs";
       options = [ "subvol=game" "compress=zstd"];
     };
     "/media/root" = {
-      device = "/dev/disk/by-uuid/96fcf084-cbcc-d15f-849c-0abcc6bd10b6";
+      device = "/dev/disk/by-uuid/c06e2de3-db2b-4ce9-baa3-8a91b491cf1a";
       fsType = "btrfs";
     };
     "/media/mobile" = {
@@ -28,7 +24,13 @@
       fsType = "ntfs";
     };
   };
-  swapDevices = [ { device = "/swap/swapfile"; } ];
+  # swapDevices = [ { device = "/swap/swapfile"; } ];
+  zramSwap = {
+    enable = true;
+    memoryPercent = 34;
+    algorithm = "zstd";
+  };
+
   nixpkgs = {
     config = {
       allowUnfree = true;
@@ -51,22 +53,12 @@
 
   i18n.defaultLocale = "zh_CN.UTF-8";
   nix = {
-    # This will add each flake input as a registry
-    # To make nix3 commands consistent with your flake
-    # WTF
-    registry = lib.mapAttrs (_: value: {flake = value;}) inputs;
-
-    # This will additionally add your inputs to the system's legacy channels
-    # Making legacy nix commands consistent as well, awesome!
-    # WTF
-    nixPath = lib.mapAttrsToList (key: value: "${key}=${value.to.path}") config.nix.registry;
-
     settings = {
       # Enable flakes and new 'nix' command
       experimental-features = "nix-command flakes";
       # Deduplicate and optimize nix store
       auto-optimise-store = true;
-      # substituters =  [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
+      substituters =  [ "https://mirrors.tuna.tsinghua.edu.cn/nix-channels/store" ];
     };
     gc = {
       automatic = true;
@@ -189,12 +181,6 @@
       enable = true;
       capSysNice = true;
     };
-  };
-
-  zramSwap = {
-    enable = true;
-    memoryPercent = 50;
-    algorithm = "zstd";
   };
 
   system.stateVersion = "24.05";

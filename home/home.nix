@@ -3,34 +3,7 @@
 { inputs,lib,config,pkgs,...}:
 let
 buildToolsVersion = "34.0.0";
-androidComposition = pkgs.androidenv.composeAndroidPackages {
-    # cmdLineToolsVersion = "14.0";
-    # toolsVersion = "26.1.1";
-    # platformToolsVersion = "34.0.5";
-    buildToolsVersions = [ "${buildToolsVersion}" ];
-    includeEmulator = false;
-    # platformVersions = [ "28" "29" "30" ];
-    includeSources = false;
-    includeSystemImages = false;
-    systemImageTypes = [ "google_apis_playstore" ];
-    abiVersions = [ "armeabi-v7a" "arm64-v8a" ];
-    # cmakeVersions = [ "3.10.2" ];
-    includeNDK = true;
-    ndkVersions = ["26.1.10909125"];
-    useGoogleAPIs = false;
-    useGoogleTVAddOns = false;
-    includeExtras = [
-      "extras;google;gcm"
-    ];
-};
 in {
-  imports = [
-    # ./android.nix
-    ./theme.nix
-    ./dconf.nix
-    ./waybar.nix
-    ./xfce.nix
-  ];
   nixpkgs = {
     config = {
       allowUnfree = true;
@@ -40,10 +13,6 @@ in {
     };
   };
 
-  home = {
-    username = "itsusinn";
-    homeDirectory = "/home/itsusinn";
-  };
   home.packages = with pkgs; [
     # shell
     bat # cat
@@ -86,7 +55,6 @@ in {
     rustup
     telegram-desktop
     qbittorrent
-    androidComposition.androidsdk
     prismlauncher
     # Desktop
     xdg-desktop-portal-hyprland
@@ -100,7 +68,6 @@ in {
     llvmPackages.libraries.libcxx
   ];
   # Enable home-manager and git
-  programs.home-manager.enable = true;
   programs.git.enable = true;
 
   programs.fish = {
@@ -108,21 +75,11 @@ in {
     shellAliases = {
       ll = "ls -l";
       update-flake = "cd /home/itsusinn/dotfiles && git add . && sudo nix flake update";
-      update = "cd /home/itsusinn/dotfiles && git add . && sudo nixos-rebuild switch --flake .#itsusinn-nixos";
+      update = "cd /home/itsusinn/dotfiles && git add . && sudo nixos-rebuild switch --flake .#nixos-ga401";
       cat = "bat";
       ls = "eza";
     };
     shellInit = "
-      rm -rf /home/itsusinn/Android/NixSdk
-      ln -s ${androidComposition.androidsdk}/libexec/android-sdk /home/itsusinn/Android/NixSdk
-      rm -rf /home/itsusinn/Android/Sdk/platform-tools
-      ln -s ${androidComposition.androidsdk}/libexec/android-sdk/platform-tools /home/itsusinn/Android/Sdk
-      rm -rf /home/itsusinn/Android/Sdk/ndk
-      ln -s ${androidComposition.androidsdk}/libexec/android-sdk/ndk /home/itsusinn/Android/Sdk
-      export ANDROID_HOME=${androidComposition.androidsdk}/libexec/android-sdk
-      export ANDROID_NDK_HOME=$ANDROID_HOME/ndk-bundle
-      export GRADLE_OPTS=-Dorg.gradle.project.android.aapt2FromMavenOverride=$ANDROID_HOME/build-tools/${buildToolsVersion}/aapt2
-
       export SDL_VIDEODRIVER=wayland
       export PATH=\"/home/itsusinn/.cargo/bin:$PATH\"
     ";
@@ -223,8 +180,4 @@ in {
   };
 
   systemd.user.startServices = "sd-switch";
-
-
-  home.stateVersion = "24.05";
-  home.enableNixpkgsReleaseCheck = true;
 }
