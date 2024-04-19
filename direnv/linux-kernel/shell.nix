@@ -3,9 +3,11 @@ let
 
   libraries = with pkgs;[
     llvmPackages.libcxxStdenv
-    llvmPackages.libraries.libcxx
-    llvmPackages.libraries.libcxxabi
     llvmPackages.libclang.lib
+    llvmPackages.lld
+    llvmPackages.libllvm
+    elfutils
+    bc
     ncurses
     pkg-config
     flex
