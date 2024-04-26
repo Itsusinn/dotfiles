@@ -134,15 +134,11 @@
     };
   };
 
-  services.pipewire = {
+
+  hardware.pulseaudio = {
     enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    jack.enable = true;
-    wireplumber.enable = true;
   };
-  hardware.pulseaudio.enable = false;
+
   hardware.steam-hardware.enable = true;
   services.gvfs.enable = true;
   services.xserver = {

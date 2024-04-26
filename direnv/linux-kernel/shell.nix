@@ -12,6 +12,7 @@ let
     pkg-config
     flex
     bison
+    openssl.dev
   ];
 
 in
