@@ -102,6 +102,7 @@ in {
       # add_newline = false;
     };
   };
+
   wayland.windowManager.hyprland = {
     enable = true;
     xwayland.enable = true;

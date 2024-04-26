@@ -9,9 +9,13 @@
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
 
     hardware.url = "github:nixos/nixos-hardware";
-    hyprland.url = "github:hyprwm/Hyprland";
 
     flake-utils.url = "github:numtide/flake-utils";
+
+    nixos-cosmic = {
+      url = "github:lilyinstarlight/nixos-cosmic";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs = inputs @ {
@@ -19,7 +23,7 @@
     nixpkgs,
     home-manager,
     nixos-hardware,
-    hyprland,
+    nixos-cosmic,
     flake-utils,
     ...
   } : {
@@ -29,7 +33,12 @@
           nixos-hardware.nixosModules.asus-zephyrus-ga401
           ./hosts/ga401
           home-manager.nixosModules.home-manager
+          nixos-cosmic.nixosModules.default
           {
+            nix.settings = {
+              substituters = [ "https://cosmic.cachix.org/" ];
+              trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
+            };
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
             home-manager.extraSpecialArgs = inputs;

@@ -1,4 +1,6 @@
-{ inputs, config, pkgs, lib, stdenv, ... }:
+{ inputs, config, pkgs, lib, stdenv, ... }: let
+  hyprland-session = pkgs.callPackage ./hyprland-session.nix {};
+in
 {
   imports =
     [
@@ -113,30 +115,23 @@
     pciutils
     tmux
     compsize
-
     #uutils-coreutils-noprefix
     #libgcc
   ];
+  services.desktopManager.cosmic.enable = true;
+  services.displayManager.cosmic-greeter.enable = true;
+  services.displayManager.sessionPackages = [ hyprland-session ];
   services = {
     btrfs.autoScrub = {
       enable = true;
       interval = "monthly";
       fileSystems = [ "/" ];
     };
-    greetd = {
-      enable = true;
-      settings = {
-        default_session = {
-          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --remember --cmd Hyprland";
-          user = "greeter";
-        };
-      };
-    };
   };
 
 
   hardware.pulseaudio = {
-    enable = true;
+    enable = false;
   };
 
   hardware.steam-hardware.enable = true;
