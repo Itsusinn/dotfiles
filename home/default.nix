@@ -1,5 +1,6 @@
-{ inputs, outputs, impurity, ... }: {
+{ inputs, outputs, impurity, catppuccin, ... }: {
   imports = [
+    catppuccin.homeManagerModules.catppuccin
     ./home.nix
     ./theme.nix
     ./dconf.nix

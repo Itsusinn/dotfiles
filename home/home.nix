@@ -72,6 +72,7 @@ in {
 
   programs.fish = {
     enable = true;
+    catppuccin.enable = true;
     shellAliases = {
       ll = "ls -l";
       update-flake = "cd /home/itsusinn/dotfiles && git add . && sudo nix flake update";
@@ -98,6 +99,7 @@ in {
   programs.neovim.enable = true;
   programs.starship = {
     enable = true;
+    catppuccin.enable = true;
     settings = {
       # add_newline = false;
     };

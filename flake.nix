@@ -11,6 +11,7 @@
     hardware.url = "github:nixos/nixos-hardware";
 
     flake-utils.url = "github:numtide/flake-utils";
+    catppuccin.url = "github:catppuccin/nix";
 
     nixos-cosmic = {
       url = "github:lilyinstarlight/nixos-cosmic";
@@ -25,6 +26,7 @@
     nixos-hardware,
     nixos-cosmic,
     flake-utils,
+    catppuccin,
     ...
   } : {
     nixosConfigurations = {
@@ -33,6 +35,7 @@
           nixos-hardware.nixosModules.asus-zephyrus-ga401
           ./hosts/ga401
           home-manager.nixosModules.home-manager
+          catppuccin.nixosModules.catppuccin
           nixos-cosmic.nixosModules.default
           {
             nix.settings = {

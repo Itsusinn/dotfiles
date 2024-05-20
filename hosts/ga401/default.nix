@@ -10,6 +10,7 @@ in
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  # boot.kernelPackages = with pkgs.linuxKernel; [packages.linux_zen linuxKernel.packages.linux_zen.perf];
   # boot.kernelParams = [ "module_blacklist=amdgpu" ];
   fileSystems = {
     "/media/game" = {
@@ -51,6 +52,7 @@ in
     # Or disable the firewall altogether.
     # networking.nftables.enable = true;
     firewall.enable = false;
+    proxy.default = "http://127.0.0.1:7890";
   };
 
   i18n.defaultLocale = "zh_CN.UTF-8";
@@ -115,6 +117,7 @@ in
     pciutils
     tmux
     compsize
+    config.boot.kernelPackages.perf
     #uutils-coreutils-noprefix
     #libgcc
   ];
