@@ -101,7 +101,10 @@
   };
 
   programs.firefox.enable = true;
-  programs.clash-verge.enable = true;
+  programs.clash-verge = {
+    enable = true;
+    autoStart = true;
+  };
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
