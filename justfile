@@ -1,7 +1,7 @@
 switch:
   git add .
-  git commit -m "Rebuild NixOS configuration [$(date '+%Y-%m-%d %H:%M:%S')]"
   sudo nixos-rebuild switch --flake .#nixos
+  git commit -m "Rebuild NixOS configuration [$(date '+%Y-%m-%d %H:%M:%S')]"
 
 update:
   nix flake update

@@ -95,6 +95,7 @@
 
   users.users.ihsin = {
     isNormalUser = true;
+    shell = pkgs.nushell;
     description = "iHsin";
     extraGroups = [ "networkmanager" "wheel" ];
   };
