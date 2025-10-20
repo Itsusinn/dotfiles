@@ -113,8 +113,8 @@
     wget
     just
     rustdesk-flutter
-    # security boot
-    sbctl
+    sbctl # security boot
+    rustup
   ];
   environment.variables.EDITOR = "nvim";
 
