@@ -5,8 +5,15 @@
     [
       ./hardware-configuration.nix
     ];
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix = {
+    settings = {
+      auto-optimise-store = true;
+      experimental-features = [ "nix-command" "flakes" ];
+    };
+    # 优化构建
+    daemonCPUSchedPolicy = "batch";
+    daemonIOSchedClass = "idle";
+  };
   # Bootloader.
   boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -15,7 +22,7 @@
     pkiBundle = "/var/lib/sbctl";
   };
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "nixos";
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -73,6 +80,12 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
+  # SSD优化
+  services.fstrim = {
+    enable = true;
+    interval = "weekly";
+  };
+
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -118,22 +131,31 @@
     enableDefaultPackages = true;
     packages = with pkgs; [
       sarasa-gothic
+      noto-fonts
+      noto-fonts-cjk-sans
+      noto-fonts-cjk-serif
+      noto-fonts-color-emoji
+      nerd-fonts.fira-code
+      nerd-fonts.jetbrains-mono
     ];
     fontconfig = {
       defaultFonts = {
-        monospace = [
-          "Sarasa Mono SC"
-        ];
-        sansSerif = [
-          "Sarasa Gothic SC"
-        ];
-        serif = [
-          "Sarasa Gothic SC"
-        ];
+        monospace = [ "JetBrainsMono Nerd Font" "Sarasa Mono SC" ];
+        sansSerif = [ "Noto Sans CJK SC" "Sarasa Gothic SC" ];
+        serif = [ "Noto Serif CJK SC" "Sarasa Gothic SC" ];
+        emoji = [ "Noto Color Emoji" ];
       };
+      enable = true;
     };
   };
 
-  system.stateVersion = "25.05";
 
+  # 启用 ZRAM
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 30;  # 使用50%的内存作为压缩交换空间
+  };
+
+  system.stateVersion = "25.05";
 }

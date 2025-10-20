@@ -1,37 +1,50 @@
 {
-  description = "A simple NixOS flake";
+  description = "NixOS system configuration flake";
 
+  # 声明外部依赖
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    # NixOS 包管理器核心仓库
+    nixpkgs = {
+      url = "github:NixOS/nixpkgs/nixos-25.05";
+    };
+
+    # Home Manager - 用户环境管理工具
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";  # 使用与系统相同版本的 nixpkgs
     };
+
+    # Lanzaboote - 安全启动管理器
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v0.4.2";
-
-      # Optional but recommended to limit the size of your system closure.
-      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs.follows = "nixpkgs";  # 减小系统闭包大小
     };
   };
 
+  # 系统配置输出
   outputs = inputs@{ self, nixpkgs, home-manager, lanzaboote, ... }: {
+    # NixOS 系统配置
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+      system = "x86_64-linux";  # 系统架构
+      
       modules = [
+        # 基础系统配置
         ./configuration.nix
+
+        # Home Manager 配置
         home-manager.nixosModules.home-manager
-        lanzaboote.nixosModules.lanzaboote
         {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-
-            home-manager.users.ihsin = import ./home.nix;
-
-            # 使用 home-manager.extraSpecialArgs 自定义传递给 ./home.nix 的参数
-            # 取消注释下面这一行，就可以在 home.nix 中使用 flake 的所有 inputs 参数了
-            # home-manager.extraSpecialArgs = inputs;
+          home-manager = {
+            useGlobalPkgs = true;      # 使用全局包
+            useUserPackages = true;     # 使用用户包
+            users.ihsin = import ./home.nix;  # 用户特定配置
+            # 向 home.nix 传递 flake inputs
+            # extraSpecialArgs = inputs;
+          };
         }
+
+        # 安全启动模块
+        lanzaboote.nixosModules.lanzaboote
       ];
     };
   };
