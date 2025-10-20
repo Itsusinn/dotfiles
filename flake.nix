@@ -26,7 +26,6 @@
     # NixOS 系统配置
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";  # 系统架构
-      
       modules = [
         # 基础系统配置
         ./configuration.nix

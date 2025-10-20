@@ -33,6 +33,10 @@
     gitkraken
     vscode
     qq
+    # Development Tools
+    gcc
+    gnumake
+    rustup
   ];
 
   # git 相关配置
