@@ -25,7 +25,7 @@
   };
 
   fileSystems."/home/ihsin/drive" = {
-    device = "/dev/nvme1n1p3";
+    device = "/dev/disk/by-uuid/58926151926134A2";
     fsType = "ntfs-3g";
     options = ["x-systemd.automount" "noauto" "x-systemd.idle-timeout=600"];
   };

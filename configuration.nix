@@ -10,10 +10,8 @@
       auto-optimise-store = true;
       experimental-features = [ "nix-command" "flakes" ];
     };
-    # 优化构建
-    daemonCPUSchedPolicy = "batch";
-    daemonIOSchedClass = "idle";
   };
+
   # Bootloader.
   boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -80,7 +78,6 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-  # SSD优化
   services.fstrim = {
     enable = true;
     interval = "weekly";
@@ -94,12 +91,6 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
 
   users.users.ihsin = {
@@ -147,12 +138,10 @@
     };
   };
 
-
-  # 启用 ZRAM
   zramSwap = {
     enable = true;
     algorithm = "zstd";
-    memoryPercent = 30;  # 使用50%的内存作为压缩交换空间
+    memoryPercent = 30;
   };
 
   system.stateVersion = "25.05";
