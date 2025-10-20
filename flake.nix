@@ -38,6 +38,7 @@
             useGlobalPkgs = true;      # 使用全局包
             useUserPackages = true;     # 使用用户包
             users.ihsin = import ./home.nix;  # 用户特定配置
+            backupFileExtension = "backup";  # 备份文件扩展名
             # 向 home.nix 传递 flake inputs
             # extraSpecialArgs = inputs;
           };
