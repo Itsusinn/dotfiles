@@ -58,8 +58,7 @@
     plugins = with pkgs.nushellPlugins; [
       net
     ];
-  }
-
+  };
 
   home.stateVersion = "25.05";
 }
