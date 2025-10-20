@@ -45,7 +45,7 @@
 
   programs.starship = {
     enable = true;
-    # 自定义配置
+    enableNushellIntegration = true;
     settings = {
       add_newline = false;
       aws.disabled = true;
@@ -53,16 +53,13 @@
       line_break.disabled = true;
     };
   };
-
-  programs.fish = {
+  programs.nushell = {
     enable = true;
-    plugins = [
-      {
-        name = "z";
-        src = pkgs.fishPlugins.z;
-      }
+    plugins = with pkgs.nushellPlugins; [
+      net
     ];
-  };
+  }
+
 
   home.stateVersion = "25.05";
 }
