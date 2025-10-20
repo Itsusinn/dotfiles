@@ -19,7 +19,7 @@
   #     xxx
   # '';
 
-  # 设置鼠标指针大小以及字体 DPI（适用于 4K 显示器）
+  # 设置鼠标指针大小以及字体 DPI
   xresources.properties = {
     "Xcursor.size" = 16;
     "Xft.dpi" = 172;
@@ -39,7 +39,7 @@
   programs.git = {
     enable = true;
     userName = "iHsin";
-    userEmail = "root@itsusinn.eu.org";
+    userEmail = "sun@ihsin.dev";
   };
 
   programs.starship = {
