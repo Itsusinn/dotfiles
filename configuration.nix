@@ -109,9 +109,7 @@
   };
 
   programs.firefox.enable = true;
-  
   programs.clash-verge.enable = true;
-
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [

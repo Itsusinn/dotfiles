@@ -13,16 +13,22 @@
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/81fa239a-c9ad-46b6-9466-f8fa70697e70";
-      fsType = "ext4";
-    };
+  fileSystems."/" = {
+    device = "/dev/disk/by-uuid/81fa239a-c9ad-46b6-9466-f8fa70697e70";
+    fsType = "ext4";
+  };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/E777-7C85";
-      fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
-    };
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-uuid/E777-7C85";
+    fsType = "vfat";
+    options = [ "fmask=0077" "dmask=0077" ];
+  };
+
+  fileSystems."/home/ihsin/drive" = {
+    device = "/dev/nvme1n1p3";
+    fsType = "ntfs-3g";
+    options = ["x-systemd.automount" "noauto" "x-systemd.idle-timeout=600"];
+  };
 
   swapDevices = [ ];
 
