@@ -37,6 +37,7 @@
     gcc
     gnumake
     rustup
+    cmake
   ];
 
   # git 相关配置
