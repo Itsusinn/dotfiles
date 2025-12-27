@@ -5,18 +5,18 @@
   inputs = {
     # NixOS 包管理器核心仓库
     nixpkgs = {
-      url = "github:NixOS/nixpkgs/nixos-25.05";
+      url = "github:NixOS/nixpkgs/nixos-25.11";
     };
 
     # Home Manager - 用户环境管理工具
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";  # 使用与系统相同版本的 nixpkgs
     };
 
     # Lanzaboote - 安全启动管理器
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v0.4.2";
+      url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";  # 减小系统闭包大小
     };
   };

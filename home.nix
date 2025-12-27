@@ -59,13 +59,11 @@
   };
   programs.nushell = {
     enable = true;
-    plugins = with pkgs.nushellPlugins; [
-      net
-    ];
+    plugins = with pkgs.nushellPlugins; [];
     settings = {
       show_banner = false;
     };
   };
 
-  home.stateVersion = "25.05";
+  home.stateVersion = "25.11";
 }
