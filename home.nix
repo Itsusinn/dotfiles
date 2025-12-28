@@ -36,6 +36,7 @@
     ida-free
     ghidra-bin
     ghidra-extensions.machinelearning
+    spotify
     # Development Tools
     gcc
     gnumake
