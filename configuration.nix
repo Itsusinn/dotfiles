@@ -118,8 +118,6 @@
   ];
   environment.variables.EDITOR = "nvim";
 
-  networking.firewall.enable = false;
-
   fonts = {
     enableDefaultPackages = true;
     packages = with pkgs; [
@@ -165,13 +163,18 @@
 
   networking.dhcpcd.extraConfig = ''
     # Sends a custom vendor class identifier (e.g., "MyCustomVendor")
+    hostname "DESKTOP-ABC1234"
     vendorclassid "MSFT 5.0"
-
+    msuserclass "MSFT 5.0"
     # Alternatively, you can send vendor specific information
     # Example: send vendor-specific information string "some_info" for option 43
     # send vendor-specific-information "some_info"
   '';
-
+  # 2. 强制所有包TTL=128
+  networking.firewall.extraCommands = ''
+    iptables -t mangle -A OUTPUT -j TTL --ttl-set 128
+    iptables -t mangle -A POSTROUTING -j TTL --ttl-set 128
+  '';
   # 5. 禁用可能暴露Linux身份的服务
   services.avahi.enable = false;  # mDNS可能暴露Linux
   
