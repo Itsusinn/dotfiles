@@ -149,19 +149,46 @@
   };
   # FAKE AS WINDOWS
   boot.kernel.sysctl = {
+    # IPv4相关
     "net.ipv4.ip_default_ttl" = 128;
+    "net.ipv4.tcp_syn_retries" = 5;
+    
+    # IPv6相关
     "net.ipv6.conf.all.hop_limit" = 128;
+    "net.ipv6.conf.default.hop_limit" = 128;
   };
   networking.hostName = "DESKTOP-ABC1234";
+  networking.firewall.extraCommands = ''
+    # 修改所有出站TCP包的TTL
+    iptables -t mangle -A POSTROUTING -p tcp -j TTL --ttl-set 128
+    iptables -t mangle -A POSTROUTING -p udp -j TTL --ttl-set 128
+    iptables -t mangle -A POSTROUTING -p icmp -j TTL --ttl-set 128
+    
+    # IPv6
+    ip6tables -t mangle -A POSTROUTING -p tcp -j HL --hl-set 128
+    ip6tables -t mangle -A POSTROUTING -p udp -j HL --hl-set 128
+    ip6tables -t mangle -A POSTROUTING -p ipv6-icmp -j HL --hl-set 128
+  '';
 
+  networking.firewall.extraStopCommands = ''
+    iptables -t mangle -F POSTROUTING 2>/dev/null || true
+    ip6tables -t mangle -F POSTROUTING 2>/dev/null || true
+  '';
   networking.networkmanager = {
     enable = true;
     dhcp = "dhcpcd";
   };
-  environment.etc."dhcpcd.conf".text = ''
-    hostname DESKTOP-ABC1234
+  # 4. DHCP配置 - Windows vendor标识
+  networking.dhcpcd.extraConfig = ''
+    hostname DESKTOP-WIN10PC
     clientid
     vendor MSFT 5.0
+    # 发送Windows特有的DHCP选项
+    option classless_static_routes
+    option ms_classless_static_routes
   '';
+  # 5. 禁用可能暴露Linux身份的服务
+  services.avahi.enable = false;  # mDNS可能暴露Linux
+  
   system.stateVersion = "25.11";
 }

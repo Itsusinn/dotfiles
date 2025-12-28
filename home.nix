@@ -42,6 +42,7 @@
     gnumake
     rustup
     cmake
+    tcpdump
   ];
 
   # git 相关配置
