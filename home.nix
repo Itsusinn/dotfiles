@@ -43,8 +43,10 @@
   # git 相关配置
   programs.git = {
     enable = true;
-    userName = "iHsin";
-    userEmail = "sun@ihsin.dev";
+    settings.user = {
+      name = "iHsin";
+      email = "sun@ihsin.dev";
+    };
   };
 
   programs.starship = {

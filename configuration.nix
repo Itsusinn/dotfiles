@@ -104,7 +104,17 @@
   programs.clash-verge = {
     enable = true;
     autoStart = true;
+    tunMode = true;
+    serviceMode = true;
   };
+
+  programs.steam = {
+    enable = true;
+    extraCompatPackages = with pkgs; [
+      proton-ge-bin
+    ];
+  };
+
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
