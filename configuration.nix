@@ -20,16 +20,6 @@
     pkiBundle = "/var/lib/sbctl";
   };
 
-  networking.hostName = "nixos";
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable networking
-  networking.networkmanager.enable = true;
-
   # Set your time zone.
   time.timeZone = "Asia/Shanghai";
 
@@ -157,6 +147,21 @@
     algorithm = "zstd";
     memoryPercent = 30;
   };
+  # FAKE AS WINDOWS
+  boot.kernel.sysctl = {
+    "net.ipv4.ip_default_ttl" = 128;
+    "net.ipv6.conf.all.hop_limit" = 128;
+  };
+  networking.hostName = "DESKTOP-ABC1234";
 
+  networking.networkmanager = {
+    enable = true;
+    dhcp = "dhcpcd";
+  };
+  environment.etc."dhcpcd.conf".text = ''
+    hostname DESKTOP-ABC1234
+    clientid
+    vendor MSFT 5.0
+  '';
   system.stateVersion = "25.11";
 }
