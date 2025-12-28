@@ -33,6 +33,9 @@
     gitkraken
     vscode
     qq
+    ida-free
+    ghidra-bin
+    ghidra-extensions.machinelearning
     # Development Tools
     gcc
     gnumake
