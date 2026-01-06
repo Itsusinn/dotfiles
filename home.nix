@@ -37,6 +37,7 @@
     ghidra-bin
     ghidra-extensions.machinelearning
     spotify
+    scanmem
     # Development Tools
     gcc
     gnumake

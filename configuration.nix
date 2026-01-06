@@ -97,10 +97,7 @@
     tunMode = true;
     serviceMode = true;
   };
-  programs.appimage = {
-    enable = true;
-    binfmt = true;
-  };
+
   programs.steam = {
     enable = true;
     extraCompatPackages = with pkgs; [
