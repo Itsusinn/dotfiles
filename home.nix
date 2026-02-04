@@ -34,7 +34,7 @@
     vscode
     qq
     spotify
-    android-studio
+    android-studio-full
     # Development Tools
     gcc
     gnumake
