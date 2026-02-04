@@ -33,17 +33,15 @@
     gitkraken
     vscode
     qq
-    ida-free
-    ghidra-bin
-    ghidra-extensions.machinelearning
     spotify
-    scanmem
+    android-studio
     # Development Tools
     gcc
     gnumake
     rustup
     cmake
     tcpdump
+    direnv
   ];
 
   # git 相关配置
