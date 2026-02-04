@@ -41,6 +41,7 @@
     rustup
     cmake
     tcpdump
+    sccache
   ];
 
   # git 相关配置
