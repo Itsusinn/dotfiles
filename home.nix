@@ -41,7 +41,6 @@
     rustup
     cmake
     tcpdump
-    direnv
   ];
 
   # git 相关配置
