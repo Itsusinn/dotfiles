@@ -92,6 +92,24 @@
   sops = {
     defaultSopsFile = ./secrets.yaml;
     age.keyFile = "/var/lib/sops-nix/key.txt";
+    templates."easytier-config.toml" = {
+      content = ''
+        network_name = "${config.sops.placeholder.easytier-network-name}"
+        network_secret = "${config.sops.placeholder.easytier-network-secret}"
+        
+        listeners = [
+          "tcp://0.0.0.0:11010",
+          "udp://0.0.0.0:11010",
+          "quic://0.0.0.0:11010"
+        ]
+        
+        peers = [
+          "${config.sops.placeholder.easytier-private-peer}",
+          "tcp://public.easytier.top:11010"
+        ]
+      '';
+      owner = "root";
+    };
     secrets = {
       easytier-network-name = {
         owner = "root";
@@ -108,20 +126,8 @@
   services.easytier.instances = {
     default = {
       enable = true;
-      configFile = null;
-      settings = {
-        # 网络名称和密码 - 使用 sops-nix 管理
-        network_name = config.sops.secrets.easytier-network-name.path;
-        network_secret = config.sops.secrets.easytier-network-secret.path;
-        # 监听地址
-        listeners = ["tcp://0.0.0.0:11010" "udp://0.0.0.0:11010" "quic://0.0.0.0:11010"];
-        # 服务器地址
-        peers = [
-          config.sops.secrets.easytier-private-peer.path
-          "tcp://public.easytier.top:11010"
-        ];
-        # 其他配置选项
-      };
+      configFile = config.sops.templates."easytier-config.toml".path;
+      settings = {};
     };
   };
 
