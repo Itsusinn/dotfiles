@@ -17,4 +17,4 @@ gc:
 
 # sudo age-keygen -o /var/lib/sops-nix/key.txt
 sops:
-  sudo SOPS_AGE_KEY_FILE=/var/lib/sops-nix/key.txt sops secrets.yaml
+  sudo EDITOR=nvim SOPS_AGE_KEY_FILE=/var/lib/sops-nix/key.txt sops secrets.yaml

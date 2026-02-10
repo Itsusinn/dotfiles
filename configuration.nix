@@ -104,7 +104,7 @@
       };
     };
   };
-
+  services.easytier.enable = true;
   services.easytier.instances = {
     default = {
       enable = true;
@@ -116,7 +116,7 @@
         # 监听地址
         listeners = ["tcp://0.0.0.0:11010" "udp://0.0.0.0:11010" "quic://0.0.0.0:11010"];
         # 服务器地址
-        peer = [
+        peers = [
           config.sops.secrets.easytier-private-peer.path
           "tcp://public.easytier.top:11010"
         ];
