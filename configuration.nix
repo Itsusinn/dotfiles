@@ -19,12 +19,13 @@
     secureBoot.enable = true;
     maxGenerations = 3;
     extraEntries = ''
-      /Windows 10
+      /Windows
         protocol: efi
         path: guid(67e71716-fe61-466c-b397-8fdf563e3251):/EFI/Microsoft/Boot/bootmgfw.efi
     '';
     extraConfig = ''
-      default_entry=2
+      default_entry=3
+      remember_last_entry=yes
     '';
     style = {
       wallpapers = [ ];
