@@ -96,8 +96,6 @@
       content = ''
         hostname = "ihsin-linux"
         listeners = [
-          "tcp://0.0.0.0:11010",
-          "udp://0.0.0.0:11010",
           "quic://0.0.0.0:11010"
         ]
         ipv4 = "192.168.233.1/24"
