@@ -13,12 +13,27 @@
   };
 
   # Bootloader.
-  boot.loader.systemd-boot.enable = lib.mkForce false;
   boot.loader.efi.canTouchEfiVariables = true;
-  boot.lanzaboote = {
+  boot.loader.limine = {
     enable = true;
-    pkiBundle = "/var/lib/sbctl";
+    secureBoot.enable = true;
+    maxGenerations = 3;
+    extraEntries = ''
+      /Windows 11
+        protocol: efi
+        path: guid(67e71716-fe61-466c-b397-8fdf563e3251):/EFI/Microsoft/Boot/bootmgfw.efi
+    '';
+    style = {
+      wallpapers = [ ];
+      interface = {
+        resolution = "2560x1440";
+        helpHidden = true;
+        branding = "blackbox";
+        brandingColor = 6;
+      };
+    };
   };
+
 
   # Set your time zone.
   time.timeZone = "Asia/Shanghai";
