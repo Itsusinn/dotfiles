@@ -104,12 +104,14 @@
         [network_identity]
         network_name = "${config.sops.placeholder.easytier-network-name}"
         network_secret = "${config.sops.placeholder.easytier-network-secret}"
-        
+
         [[peer]]
         uri = "${config.sops.placeholder.easytier-private-peer}"
-        
+
         [[peer]]
         uri = "tcp://public.easytier.top:11010"
+        [flags]
+        dev_name = "easytier"
       '';
       owner = "root";
     };
