@@ -32,7 +32,7 @@
     qq
     spotify
     telegram-desktop
-    android-studio-full
+    android-studio
     # Development Tools
     gcc
     gnumake
@@ -40,6 +40,7 @@
     cmake
     tcpdump
     sccache
+    zulu25
   ];
 
   # git 相关配置

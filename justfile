@@ -14,3 +14,7 @@ gc:
   # garbage collect all unused nix store entries
   sudo nix store gc --debug
   sudo nix-collect-garbage --delete-old
+
+# sudo age-keygen -o /var/lib/sops-nix/key.txt
+sops:
+  sudo SOPS_AGE_KEY_FILE=/var/lib/sops-nix/key.txt sops secrets.yaml

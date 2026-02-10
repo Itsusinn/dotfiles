@@ -1,0 +1,6 @@
+# sops 配置文件
+creation_rules:
+  - path_regex: secrets\.yaml$
+    # sudo age-keygen -y /var/lib/sops-nix/key.txt
+    age: >-
+      age1ks34v4630rqwhr29glumnjjf5rpz2v9gdh4ekeyz37p2f2tkyawsny5xsz

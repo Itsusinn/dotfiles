@@ -23,10 +23,6 @@
         protocol: efi
         path: guid(67e71716-fe61-466c-b397-8fdf563e3251):/EFI/Microsoft/Boot/bootmgfw.efi
     '';
-    extraConfig = ''
-      default_entry=3
-      remember_last_entry=yes
-    '';
     style = {
       wallpapers = [ ];
       interface = {
@@ -92,6 +88,43 @@
     interval = "weekly";
   };
 
+  # sops-nix 机密管理配置
+  sops = {
+    defaultSopsFile = ./secrets.yaml;
+    age.keyFile = "/var/lib/sops-nix/key.txt";
+    secrets = {
+      easytier-network-name = {
+        owner = "root";
+      };
+      easytier-network-secret = {
+        owner = "root";
+      };
+      easytier-private-peer = {
+        owner = "root";
+      };
+    };
+  };
+
+  services.easytier.instances = {
+    default = {
+      enable = true;
+      configFile = null;
+      settings = {
+        # 网络名称和密码 - 使用 sops-nix 管理
+        network_name = config.sops.secrets.easytier-network-name.path;
+        network_secret = config.sops.secrets.easytier-network-secret.path;
+        # 监听地址
+        listeners = ["tcp://0.0.0.0:11010" "udp://0.0.0.0:11010" "quic://0.0.0.0:11010"];
+        # 服务器地址
+        peer = [
+          config.sops.secrets.easytier-private-peer.path
+          "tcp://public.easytier.top:11010"
+        ];
+        # 其他配置选项
+      };
+    };
+  };
+
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -123,6 +156,10 @@
       proton-ge-bin
     ];
   };
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+  };
   nixpkgs.config.allowUnfree = true;
   nixpkgs.config.android_sdk.accept_license = true;
   environment.systemPackages = with pkgs; [
@@ -133,6 +170,8 @@
     rustdesk-flutter
     sbctl # security boot
     rustup
+    age # sops-nix 需要
+    sops # 用于编辑加密文件
   ];
   environment.variables.EDITOR = "nvim";
 
