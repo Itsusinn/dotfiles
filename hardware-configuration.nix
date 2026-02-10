@@ -27,7 +27,13 @@
   fileSystems."/home/ihsin/drive" = {
     device = "/dev/disk/by-uuid/58926151926134A2";
     fsType = "ntfs-3g";
-    options = ["x-systemd.automount" "noauto" "x-systemd.idle-timeout=600"];
+    options = [
+      "x-systemd.automount"
+      "noauto"
+      "x-systemd.idle-timeout=600"
+      "uid=1000"
+      "gid=100"
+    ];
   };
 
   swapDevices = [ ];
