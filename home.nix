@@ -34,6 +34,7 @@
     telegram-desktop
     android-studio
     # Development Tools
+    
     gcc
     gnumake
     rustup
@@ -55,6 +56,7 @@
   programs.starship = {
     enable = true;
     enableNushellIntegration = true;
+    enableFishIntegration = true;
     settings = {
       add_newline = false;
       aws.disabled = true;
@@ -68,6 +70,9 @@
     settings = {
       show_banner = false;
     };
+  };
+  programs.fish = {
+    enable = true;
   };
   programs.direnv = {
     enable = true;
