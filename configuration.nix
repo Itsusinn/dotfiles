@@ -94,19 +94,22 @@
     age.keyFile = "/var/lib/sops-nix/key.txt";
     templates."easytier-config.toml" = {
       content = ''
-        network_name = "${config.sops.placeholder.easytier-network-name}"
-        network_secret = "${config.sops.placeholder.easytier-network-secret}"
-        
+        hostname = "ihsin-linux"
         listeners = [
           "tcp://0.0.0.0:11010",
           "udp://0.0.0.0:11010",
           "quic://0.0.0.0:11010"
         ]
+        ipv4 = "192.168.233.1/24"
+        [network_identity]
+        network_name = "${config.sops.placeholder.easytier-network-name}"
+        network_secret = "${config.sops.placeholder.easytier-network-secret}"
         
-        peers = [
-          "${config.sops.placeholder.easytier-private-peer}",
-          "tcp://public.easytier.top:11010"
-        ]
+        [[peer]]
+        uri = "${config.sops.placeholder.easytier-private-peer}"
+        
+        [[peer]]
+        uri = "tcp://public.easytier.top:11010"
       '';
       owner = "root";
     };
@@ -127,7 +130,6 @@
     default = {
       enable = true;
       configFile = config.sops.templates."easytier-config.toml".path;
-      settings = {};
     };
   };
 
